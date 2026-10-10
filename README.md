@@ -1,6 +1,6 @@
 # OMA v1.8 — Audit checkpoint and independent verification
 
-Development/read-only continuation of v1.7 for oVirt Engine 4.5.6. The React UI and existing Engine REST API read paths are retained. VM mutations remain **blocked**; real SSO/RBAC and browser console are **not** verified.
+Development/read-only continuation of v1.7 for OV-Works Engine 4.5.6. The React UI and existing Engine REST API read paths are retained. VM mutations remain **blocked**; real SSO/RBAC and browser console are **not** verified.
 
 ## v1.8 changes
 - HMAC-SHA256 signed audit checkpoint: count + final hash of an independently verified SHA-256 chain.
@@ -31,7 +31,7 @@ OMA_DEMO=true OMA_COOKIE_SECURE=false OMA_AUDIT_PATH=/tmp/oma-dev-audit.jsonl uv
 In a second terminal: `cd frontend && npm install && npm run dev`, browse to `http://127.0.0.1:5173` and use `demo/demo`. Never expose demo mode externally.
 
 ## Known limitations
-- No actual oVirt 4.5.6 Engine integration test or production React build completed here.
+- No actual OV-Works 4.5.6 Engine integration test or production React build completed here.
 - In-memory sessions/rate limits are not HA-ready.
 - Hash-chain full-file verification per append is O(n) and not suitable for high-volume production.
 - SSO, RBAC, VM console and writes remain unverified/disabled.

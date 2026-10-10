@@ -4,14 +4,14 @@ import argparse, getpass, json, sys
 import httpx
 
 def main():
-    p=argparse.ArgumentParser(description='Read-only oVirt Engine REST API probe')
+    p=argparse.ArgumentParser(description='Read-only OV-Works Engine REST API probe')
     p.add_argument('--url',required=True,help='https://engine.example.com/ovirt-engine/api')
     p.add_argument('--ca',required=True,help='trusted Engine CA PEM file')
     p.add_argument('--username',required=True)
     a=p.parse_args()
     if not a.url.startswith('https://'):
         p.error('HTTPS is mandatory')
-    password=getpass.getpass('oVirt password (not saved): ')
+    password=getpass.getpass('OV-Works password (not saved): ')
     results={}
     with httpx.Client(verify=a.ca,timeout=15,follow_redirects=False,auth=(a.username,password),headers={'Accept':'application/json','Version':'4'}) as client:
         for resource in ('','vms','hosts','clusters','datacenters','storagedomains','networks','events'):

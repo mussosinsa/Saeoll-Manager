@@ -9,7 +9,7 @@ import httpx
 from fastapi import FastAPI, Request, HTTPException, Response, Query
 from pydantic import BaseModel
 
-app=FastAPI(title='oVirt Modern Admin API',docs_url=None,redoc_url=None)
+app=FastAPI(title='OV-Works 4.5 Admin API',docs_url=None,redoc_url=None)
 ENGINE=os.getenv('OVIRT_API_URL','https://engine.example.com/ovirt-engine/api').rstrip('/')
 CA=os.getenv('OVIRT_CA_FILE','/etc/pki/ovirt-engine/ca.pem')
 DEMO=os.getenv('OMA_DEMO','false').lower()=='true'
@@ -107,7 +107,7 @@ async def engine_call(obj,method,path,body=None,params=None):
         raise HTTPException(502,'Engine connection failed')
 
 def normalize(data,key):
-    # oVirt collections generally have {vms:{vm:[...]}}; tolerate empty responses.
+    # OV-Works collections generally have {vms:{vm:[...]}}; tolerate empty responses.
     group=data.get(key,{}) if isinstance(data,dict) else {}
     if isinstance(group,dict): return group.get(COLLECTIONS.get(key,SUBRES.get(key,key)),[]) or []
     return group if isinstance(group,list) else []
