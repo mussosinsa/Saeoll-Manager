@@ -1,0 +1,20 @@
+# Enable mod_proxy, mod_proxy_http and SSL; adapt ServerName and certificate paths.
+<VirtualHost *:443>
+ ServerName oma.example.com
+ SSLEngine on
+ SSLCertificateFile /etc/pki/tls/certs/oma.crt
+ SSLCertificateKeyFile /etc/pki/tls/private/oma.key
+ DocumentRoot /opt/oma/frontend/dist
+ <Directory /opt/oma/frontend/dist>
+   Require all granted
+   Options -Indexes
+   AllowOverride None
+   FallbackResource /index.html
+ </Directory>
+ ProxyPreserveHost On
+ ProxyPass /api/ http://127.0.0.1:8088/api/
+ ProxyPassReverse /api/ http://127.0.0.1:8088/api/
+ Header always set X-Content-Type-Options nosniff
+ Header always set Referrer-Policy no-referrer
+ Header always set X-Frame-Options DENY
+</VirtualHost>
