@@ -1,0 +1,26 @@
+{
+  "clusters": [
+    {
+      "id": "production",
+      "name": "Production Kubernetes",
+      "server": "https://k8s-api.example.com:6443",
+      "ca_file": "/etc/oma/kubernetes/production-ca.pem",
+      "token_file": "/etc/oma/kubernetes/production-token",
+      "users": {
+        "operator@example": {
+          "namespaces": ["administration"],
+          "cluster_resources": true,
+          "logs": true,
+          "configmaps": false,
+          "secrets": false,
+          "rbac": false
+        }
+      },
+      "node_vm_map": {
+        "control-plane": "REPLACE-WITH-VM-101-UUID",
+        "worker-1": "REPLACE-WITH-VM-102-UUID",
+        "worker-2": "REPLACE-WITH-VM-103-UUID"
+      }
+    }
+  ]
+}

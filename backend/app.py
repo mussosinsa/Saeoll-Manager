@@ -290,3 +290,8 @@ def diagnostics(request:Request):
         'audit_sink_configured':AUDIT.parent.is_dir(),
         'audit_chain_format':'sha256-v1',
     }
+
+
+# Separate Kubernetes authorization; Engine tokens are never reused for cluster access.
+from .kubernetes import router as kubernetes_router
+app.include_router(kubernetes_router(session, log_audit))

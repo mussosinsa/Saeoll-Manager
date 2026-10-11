@@ -6,9 +6,9 @@ Wants=network-online.target
 [Service]
 User=oma
 Group=oma
-WorkingDirectory=/opt/oma/backend
+WorkingDirectory=/opt/oma
 EnvironmentFile=/etc/oma/oma.env
-ExecStart=/opt/oma/backend/.venv/bin/uvicorn app:app --host 127.0.0.1 --port 8088 --workers 1
+ExecStart=/opt/oma/backend/.venv/bin/uvicorn backend.app:app --host 127.0.0.1 --port 8088 --workers 1
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=true

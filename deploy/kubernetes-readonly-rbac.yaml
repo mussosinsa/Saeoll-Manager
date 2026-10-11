@@ -1,0 +1,73 @@
+# Apply to each cluster after adapting the application namespace.
+# No token Secret is created; use expiring TokenRequest credentials and rotation.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ov-works
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ov-works-reader
+  namespace: ov-works
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ov-works-node-reader
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list"]
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["nodes"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ov-works-node-reader
+subjects:
+  - kind: ServiceAccount
+    name: ov-works-reader
+    namespace: ov-works
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ov-works-node-reader
+---
+# The administration namespace must already exist. Duplicate these two objects
+# for every explicitly permitted workload namespace.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ov-works-workload-reader
+  namespace: administration
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "events"]
+    verbs: ["get", "list"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "statefulsets", "daemonsets"]
+    verbs: ["get", "list"]
+  - apiGroups: ["batch"]
+    resources: ["jobs", "cronjobs"]
+    verbs: ["get", "list"]
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ov-works-workload-reader
+  namespace: administration
+subjects:
+  - kind: ServiceAccount
+    name: ov-works-reader
+    namespace: ov-works
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ov-works-workload-reader

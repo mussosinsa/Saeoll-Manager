@@ -23,15 +23,21 @@ python3.11 tools/audit_anchor.py verify --log /var/log/oma/audit.jsonl --anchor 
 
 ## Demo
 ```bash
-cd backend
-python3.11 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-OMA_DEMO=true OMA_COOKIE_SECURE=false OMA_AUDIT_PATH=/tmp/oma-dev-audit.jsonl uvicorn app:app --host 127.0.0.1 --port 8088
+python3.11 -m venv backend/.venv && source backend/.venv/bin/activate
+pip install -r backend/requirements.txt
+OMA_DEMO=true OMA_COOKIE_SECURE=false OMA_AUDIT_PATH=/tmp/oma-dev-audit.jsonl uvicorn backend.app:app --host 127.0.0.1 --port 8088
 ```
 In a second terminal: `cd frontend && npm install && npm run dev`, browse to `http://127.0.0.1:5173` and use `demo/demo`. Never expose demo mode externally.
 
 ## Known limitations
-- No actual OV-Works 4.5.6 Engine integration test or production React build completed here.
+- No actual OV-Works 4.5.6 Engine integration test completed here; the React production build is validated locally.
 - In-memory sessions/rate limits are not HA-ready.
 - Hash-chain full-file verification per append is O(n) and not suitable for high-volume production.
 - SSO, RBAC, VM console and writes remain unverified/disabled.
+
+## Kubernetes 현황 관리
+
+상단 **Kubernetes** 버튼으로 여러 클러스터의 노드, Pod·컨테이너, 워크로드, 이벤트, 로그와
+선택적 ConfigMap·Secret 메타데이터·RBAC·메트릭을 조회합니다. VM↔노드 연결도 지원합니다.
+현재 조회 전용이며 데모 세션에서는 샘플 데이터를 사용합니다.
+실제 클러스터 등록, 인증·권한, 배포 예시와 제한 사항은 [Kubernetes 운영 안내](docs/kubernetes.md)를 참고하세요.
