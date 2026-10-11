@@ -1,0 +1,106 @@
+.integration-tabs,
+.integration-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.integration-tabs {
+  border-bottom: 1px solid #cbd1d5;
+  padding-bottom: 9px;
+}
+.integration-tabs button.active {
+  background: #298dcc;
+  color: white;
+  border-color: #298dcc;
+}
+.integration-fields {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.integration-fields label {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+.integration-fields input:not([type="checkbox"]) {
+  width: 100%;
+}
+.integration-fields .check-field {
+  display: flex;
+}
+.integration-success {
+  border: 1px solid #a2cdb0;
+  background: #eef9f0;
+  padding: 10px;
+  color: #27663b;
+  overflow-wrap: anywhere;
+}
+.integration-toolbar label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.integrations h3 {
+  margin: 18px 0 8px;
+}
+.access-editor {
+  border: 1px solid #cbd1d5;
+  margin: 14px 0;
+  padding: 12px;
+}
+.access-editor legend {
+  color: #1a739f;
+  font-weight: bold;
+}
+.access-editor > label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.access-editor > label input {
+  flex: 1;
+}
+.access-flags {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.access-flags label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.integration-guide pre {
+  background: #edf2f5;
+  padding: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.integrations input {
+  max-width: 100%;
+}
+@media (max-width: 760px) {
+  .integration-fields label {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+  }
+  .integration-fields .check-field {
+    flex-direction: row;
+  }
+  .access-editor > label {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .integration-toolbar input {
+    width: 100%;
+  }
+}

@@ -23,6 +23,7 @@ import {
   PanelBottomOpen,
 } from "lucide-react";
 import Kubernetes from "./Kubernetes";
+import Integrations from "./Integrations";
 import { Panel, Status, Details, Modal } from "./ui";
 import "./style.css";
 
@@ -150,9 +151,9 @@ function App() {
     [errors, setErrors] = useState<Partial<Record<Resource, string>>>({});
   const [loading, setLoading] = useState(false),
     [updated, setUpdated] = useState(""),
-    [tab, setTab] = useState<Resource | "dashboard" | "search" | "kubernetes">(
-      "dashboard",
-    );
+    [tab, setTab] = useState<
+      Resource | "dashboard" | "search" | "kubernetes" | "integrations"
+    >("dashboard");
   const [selection, setSelection] = useState<Selection>(null),
     [detailTab, setDetailTab] = useState("Summary"),
     [query, setQuery] = useState(""),
@@ -302,13 +303,22 @@ function App() {
       });
     return () => controller.abort();
   }, [auth, selection, detailTab, updated]);
+  const integrationDirty = useRef(false);
+  const integrationDirtyChanged = useCallback((value: boolean) => {
+    integrationDirty.current = value;
+  }, []);
+  const leaveIntegration = () =>
+    !integrationDirty.current ||
+    window.confirm("저장하지 않은 연동 설정을 버리고 이동할까요?");
   const navigate = (next: typeof tab) => {
+    if (next !== tab && !leaveIntegration()) return;
     setQuery("");
     setTab(next);
     setSelection(null);
     setDetailTab("Summary");
   };
   const pick = (resource: Resource, item: Item) => {
+    if (!leaveIntegration()) return;
     setTab(resource);
     setSelection({ resource, id: item.id });
     setDetailTab("Summary");
@@ -336,6 +346,7 @@ function App() {
     }
   };
   const logout = async () => {
+    if (!leaveIntegration()) return;
     if (!auth) return;
     setNotice("");
     try {
@@ -730,7 +741,9 @@ function App() {
         ? "자원 검색"
         : tab === "kubernetes"
           ? "Kubernetes 현황"
-          : labels[tab];
+          : tab === "integrations"
+            ? "연동 설정"
+            : labels[tab];
   return (
     <div
       className={`console ${preferences.density} ${preferences.events ? "with-events" : ""}`}
@@ -749,6 +762,7 @@ function App() {
           className="global-search"
           onSubmit={(e) => {
             e.preventDefault();
+            if (!leaveIntegration()) return;
             setTab("search");
             setSelection(null);
           }}
@@ -759,6 +773,7 @@ function App() {
             placeholder="자원 이름 또는 ID 검색"
             value={query}
             onChange={(e) => {
+              if (!leaveIntegration()) return;
               setQuery(e.target.value);
               setTab("search");
               setSelection(null);
@@ -766,6 +781,10 @@ function App() {
           />
         </form>
         <div className="top-actions">
+          <button onClick={() => navigate("integrations")}>
+            <Network size={15} />
+            연동 설정
+          </button>
           <span className="mode-badge">
             {auth.demo ? "DEMO" : "ENGINE"} · READ ONLY
           </span>
@@ -978,7 +997,12 @@ function App() {
                 ))}
               </div>
             )}
-            {tab === "kubernetes" ? (
+            {tab === "integrations" ? (
+              <Integrations
+                csrf={auth.csrf}
+                onDirtyChange={integrationDirtyChanged}
+              />
+            ) : tab === "kubernetes" ? (
               <Kubernetes
                 vms={inventory.vms}
                 close={() => navigate("dashboard")}

@@ -64,6 +64,8 @@ def configurations():
             require(isinstance(c.get("node_vm_map", {}), dict))
             require(all(isinstance(k, str) and isinstance(v, str) for k, v in c.get("node_vm_map", {}).items()))
         return entries
+    except FileNotFoundError:
+        return []
     except (OSError, ValueError, KeyError, TypeError, AttributeError):
         raise HTTPException(503, "Kubernetes server configuration is invalid") from None
 

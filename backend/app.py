@@ -9,18 +9,23 @@ import httpx
 from fastapi import FastAPI, Request, HTTPException, Response, Query
 from pydantic import BaseModel
 
+from .integrations import load_engine_settings, router as integrations_router
+ENGINE_SETTINGS=load_engine_settings()
+
 app=FastAPI(title='OV-Works 4.5 Admin API',docs_url=None,redoc_url=None)
-ENGINE=os.getenv('OVIRT_API_URL','https://engine.example.com/ovirt-engine/api').rstrip('/')
-CA=os.getenv('OVIRT_CA_FILE','/etc/pki/ovirt-engine/ca.pem')
+ENGINE=ENGINE_SETTINGS.get('api_url',os.getenv('OVIRT_API_URL','https://engine.example.com/ovirt-engine/api')).rstrip('/')
+CA=ENGINE_SETTINGS.get('ca_file',os.getenv('OVIRT_CA_FILE','/etc/pki/ovirt-engine/ca.pem'))
 DEMO=os.getenv('OMA_DEMO','false').lower()=='true'
 if DEMO and (os.getenv('OMA_ALLOW_PASSWORD_LOGIN','false').lower()=='true' or os.getenv('OMA_ENABLE_OVIRT_TOKEN_LOGIN','false').lower()=='true'):
     raise RuntimeError('Demo mode and Engine password login must not both be enabled')
 ALLOW_LOGIN=os.getenv('OMA_ALLOW_PASSWORD_LOGIN','false').lower()=='true'
 if ALLOW_LOGIN and not DEMO:
     raise RuntimeError('Basic password sessions are disabled in v1.6; use the Engine token flow')
-TOKEN_LOGIN=os.getenv('OMA_ENABLE_OVIRT_TOKEN_LOGIN','false').lower()=='true'
-SSO_TOKEN_URL=os.getenv('OVIRT_SSO_TOKEN_URL',ENGINE.rsplit('/api',1)[0]+'/sso/oauth/token')
-SSO_SCOPE=os.getenv('OVIRT_SSO_SCOPE','ovirt-app-api')
+TOKEN_LOGIN=ENGINE_SETTINGS.get('token_login',os.getenv('OMA_ENABLE_OVIRT_TOKEN_LOGIN','false').lower()=='true')
+if DEMO and TOKEN_LOGIN:
+    raise RuntimeError('Demo mode cannot enable Engine token login')
+SSO_TOKEN_URL=ENGINE_SETTINGS.get('sso_token_url',os.getenv('OVIRT_SSO_TOKEN_URL',ENGINE.rsplit('/api',1)[0]+'/sso/oauth/token'))
+SSO_SCOPE=ENGINE_SETTINGS.get('sso_scope',os.getenv('OVIRT_SSO_SCOPE','ovirt-app-api'))
 MAX_INVENTORY=max(100,min(int(os.getenv('OMA_MAX_INVENTORY','2000')),10000))
 WRITE=os.getenv('OMA_ENABLE_WRITES','false').lower()=='true'
 COOKIE_SECURE=os.getenv('OMA_COOKIE_SECURE','true').lower()=='true'
@@ -295,3 +300,8 @@ def diagnostics(request:Request):
 # Separate Kubernetes authorization; Engine tokens are never reused for cluster access.
 from .kubernetes import router as kubernetes_router
 app.include_router(kubernetes_router(session, log_audit))
+
+app.include_router(integrations_router(session, csrf, log_audit, lambda: {
+    'api_url': ENGINE, 'ca_file': CA, 'sso_token_url': SSO_TOKEN_URL,
+    'sso_scope': SSO_SCOPE, 'token_login': TOKEN_LOGIN,
+}))

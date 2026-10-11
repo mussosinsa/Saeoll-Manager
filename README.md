@@ -47,3 +47,11 @@ In a second terminal: `cd frontend && npm install && npm run dev`, browse to `ht
 서버 트리·자원별 메뉴·상세 패널·하단 이벤트를 갖춘 통합 콘솔입니다.
 검색, 화면 밀도/갱신 설정, Kubernetes 상세·로그, 모바일 배치를 지원합니다.
 [화면 구성 및 UI 테스트 안내](docs/ui-console.md)를 참고하세요.
+
+## Engine / Kubernetes 연동 설정 메뉴
+
+상단 **연동 설정**에서 관리자 전용 Engine REST API·SSO 설정, Kubernetes 클러스터 등록,
+사용자별 네임스페이스/권한, Node→VM 매핑, 연결 확인과 저장을 제공합니다.
+데모는 입력 예시만 제공하며 실제 저장/연결은 차단합니다.
+최초 로그인 준비, 파일 권한, systemd 적용, 설정 이전과 복구는
+[연동 설정 가이드](docs/integration-setup.md)를 참고하세요.

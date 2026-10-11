@@ -105,3 +105,10 @@ API 서버 장애 격리, Pod 다중 컨테이너 로그/이전 로그, Secret �
 ConfigMap/Secret/RBAC 변경을 도입하려면 사용자 신원 연계, 별도 변경 권한, CSRF 검증,
 변경 미리보기, resourceVersion 충돌 처리, 감사 및 회복 절차를 먼저 설계해야 합니다.
 Kubernetes Worker VM 종료는 cordon/drain, PDB, 로컬 데이터, Control Plane quorum을 고려해야 합니다.
+
+## 웹 연동 설정 메뉴
+
+관리자 전용 웹 등록/수정 메뉴를 사용하는 경우 위 수동 설정 경로 대신 쓰기 가능한 설정 파일
+(`/var/lib/oma/config/clusters.json`)과 root가 관리하는 자격증명 디렉터리를 준비합니다.
+최초 로그인 및 기존 설정 이전을 포함한 절차는 [연동 설정 가이드](integration-setup.md)를 따르세요.
+이 메뉴의 설정 변경은 Kubernetes 리소스 변경 기능과 별개입니다. 워크로드/Secret/RBAC 변경은 여전히 제공하지 않습니다.

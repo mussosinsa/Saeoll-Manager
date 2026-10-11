@@ -15,7 +15,7 @@ NoNewPrivileges=true
 ProtectSystem=strict
 ProtectHome=true
 PrivateTmp=true
-ReadWritePaths=/var/log/oma
+ReadWritePaths=/var/log/oma -/var/lib/oma/config
 
 [Install]
 WantedBy=multi-user.target
