@@ -41,3 +41,9 @@ In a second terminal: `cd frontend && npm install && npm run dev`, browse to `ht
 선택적 ConfigMap·Secret 메타데이터·RBAC·메트릭을 조회합니다. VM↔노드 연결도 지원합니다.
 현재 조회 전용이며 데모 세션에서는 샘플 데이터를 사용합니다.
 실제 클러스터 등록, 인증·권한, 배포 예시와 제한 사항은 [Kubernetes 운영 안내](docs/kubernetes.md)를 참고하세요.
+
+## 관리 콘솔 UI
+
+서버 트리·자원별 메뉴·상세 패널·하단 이벤트를 갖춘 통합 콘솔입니다.
+검색, 화면 밀도/갱신 설정, Kubernetes 상세·로그, 모바일 배치를 지원합니다.
+[화면 구성 및 UI 테스트 안내](docs/ui-console.md)를 참고하세요.

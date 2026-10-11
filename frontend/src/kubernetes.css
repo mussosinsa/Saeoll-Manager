@@ -1,1 +1,173 @@
-.kubernetes{padding:24px;max-width:1500px;margin:auto;color:#243449}.kubernetes header{display:flex;justify-content:space-between;gap:20px;align-items:center;position:static;height:auto;padding:16px}.kubernetes h1{font-size:22px}.kube-controls{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:20px 0}.kube-controls label{display:flex;gap:8px;align-items:center}.kubernetes select,.kubernetes button{padding:8px;border:1px solid #bdc9d5;border-radius:4px;background:white;color:#243449}.kubernetes button:disabled{opacity:.5}.kubernetes pre{background:#edf2f7;max-height:450px;overflow:auto;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.kubernetes td{max-width:650px;overflow-wrap:anywhere;white-space:normal}.kubernetes section{margin-top:24px}.kubernetes table{width:100%}
+.kubernetes {
+  min-width: 0;
+}
+.kube-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.kube-heading h1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  color: #387997;
+}
+.kubernetes .notice {
+  padding: 9px 12px;
+  border: 1px solid #ccdce5;
+  background: #edf5fa;
+  color: #4e7387;
+  font-size: 12px;
+  margin: 0 0 12px;
+}
+.kube-layout {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.kube-resource-nav {
+  width: 165px;
+  flex-shrink: 0;
+  background: #f1f3f4;
+  border: 1px solid #cbd1d5;
+  position: sticky;
+  top: 0;
+}
+.kube-main {
+  flex: 1;
+  min-width: 0;
+}
+.kube-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 9px;
+  background: #eef2f5;
+  border: 1px solid #d2dbe2;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+.kube-controls label {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.kube-controls select {
+  max-width: 200px;
+}
+.kube-controls span {
+  font-size: 10px;
+  color: #657982;
+}
+.kube-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 10px 0;
+}
+.kube-stats > div {
+  background: #fff;
+  border: 1px solid #cfdce5;
+  border-top: 3px solid #4babc3;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.kube-stats > div:nth-child(2) {
+  border-top-color: #6d9bcb;
+}
+.kube-stats > div:nth-child(3) {
+  border-top-color: #64b093;
+}
+.kube-stats span {
+  font-size: 11px;
+  color: #69808f;
+}
+.kube-stats strong {
+  font-size: 20px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.kubernetes .table-scroll {
+  border: 1px solid #cbd1d5;
+  margin-bottom: 10px;
+}
+.kubernetes td > button {
+  background: none;
+  border: 0;
+  color: #1974a8;
+  text-align: left;
+  padding: 0;
+  justify-content: flex-start;
+}
+.kubernetes th,
+.kubernetes td {
+  max-width: 340px;
+}
+.kube-detail {
+  margin-top: 14px;
+}
+.kube-detail .panel-content > button {
+  margin-bottom: 10px;
+}
+.kubernetes pre {
+  background: #f0f4f7;
+  max-height: 400px;
+  overflow: auto;
+  padding: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.raw-data {
+  margin: 12px 0;
+}
+.raw-data summary {
+  color: #31789f;
+  cursor: pointer;
+}
+.kubernetes h3 {
+  margin: 12px 0;
+}
+.kubernetes p {
+  font-size: 12px;
+}
+@media (max-width: 1100px) {
+  .kube-resource-nav {
+    width: 140px;
+  }
+  .kube-controls select {
+    max-width: 160px;
+  }
+}
+@media (max-width: 760px) {
+  .kube-layout {
+    flex-direction: column;
+  }
+  .kube-resource-nav {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    position: static;
+  }
+  .kube-resource-nav .pane-heading {
+    display: none;
+  }
+  .kube-resource-nav > button {
+    width: auto;
+  }
+  .kube-main {
+    width: 100%;
+  }
+  .kube-stats {
+    grid-template-columns: 1fr;
+  }
+  .kube-heading {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
